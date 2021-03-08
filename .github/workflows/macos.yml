@@ -1,0 +1,22 @@
+on: [push]
+
+jobs:
+  build:
+    name: Build on MacOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - run: |
+          git submodule init
+          git submodule update
+
+      - name: Install depdendencies
+        run: brew install cmake glfw freetype
+
+      - name: Build
+        run: |
+          cmake -H. -Bbuild
+          cmake --build build -- -j2
