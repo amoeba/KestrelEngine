@@ -1,0 +1,20 @@
+on: [push]
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - run: |
+          git submodule init
+          git submodule update
+
+      - uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install cmake glfw3
+
+      - name: Run build
+        run: |
+          cmake -H. -Bbuild
+          cmake --build build -- -j2
